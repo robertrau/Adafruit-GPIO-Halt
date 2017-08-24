@@ -57,6 +57,11 @@ POSSIBILITY OF SUCH DAMAGE.
       By: Robert S. Rau
  Changes: Added shutdown ack and log for PiFly compatibility. Increased debounceTime from 20ms to 50ms.
 
+ Updated: 8/24/2017
+    Rev.: 2.01
+      By: Robert S. Rau
+ Changes: Changed order of shutdown commands.
+
 */
 
 #include <stdio.h>
@@ -284,9 +289,9 @@ int main(int argc, char *argv[]) {
 			// Else timeout occurred
 		} else if(timeout == debounceTime) { // Button debounce timeout
 			if(pressed) {
-				(void)system("shutdown -h now");
-				(void)system("gpio -g write 16 1");
 				(void)system("echo "Pifly GPIO16 shutdown on" $(date +'%A,  %B %e, %Y, %X %Z') >> /var/log/piflyrunlog.txt");
+				(void)system("gpio -g write 16 1");
+				(void)system("shutdown -h now");
 				running = 0;
 			}
 		}
