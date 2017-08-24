@@ -49,6 +49,14 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
+
+
+
+ Updated: 8/23/2017
+    Rev.: 2.00
+      By: Robert S. Rau
+ Changes: Added shutdown ack and log for PiFly compatibility. Increased debounceTime from 20ms to 50ms.
+
 */
 
 #include <stdio.h>
@@ -71,7 +79,7 @@ int
 volatile unsigned int
   *gpio;                             // GPIO register table
 const int
-   debounceTime = 20;                // 20 ms for button debouncing
+   debounceTime = 50;                // 20 ms for button debouncing
 
 
 // Some utility functions ------------------------------------------------
@@ -277,6 +285,8 @@ int main(int argc, char *argv[]) {
 		} else if(timeout == debounceTime) { // Button debounce timeout
 			if(pressed) {
 				(void)system("shutdown -h now");
+				(void)system("gpio -g write 16 1");
+				(void)system("echo "Pifly GPIO16 shutdown on" $(date +'%A,  %B %e, %Y, %X %Z') >> /var/log/piflyrunlog.txt");
 				running = 0;
 			}
 		}
