@@ -62,6 +62,11 @@ POSSIBILITY OF SUCH DAMAGE.
       By: Robert S. Rau
  Changes: Changed order of shutdown commands.
 
+ Updated: 8/24/2017
+    Rev.: 2.02
+      By: Robert S. Rau
+ Changes: Fixed echo delimiters for shutdown log.
+
 */
 
 #include <stdio.h>
@@ -289,7 +294,7 @@ int main(int argc, char *argv[]) {
 			// Else timeout occurred
 		} else if(timeout == debounceTime) { // Button debounce timeout
 			if(pressed) {
-				(void)system("echo "Pifly GPIO16 shutdown on" $(date +'%A,  %B %e, %Y, %X %Z') >> /var/log/piflyrunlog.txt");
+				(void)system("echo 'Pifly GPIO16 shutdown on' $(date +'%A,  %B %e, %Y, %X %Z') >> /var/log/piflyrunlog.txt");
 				(void)system("gpio -g write 16 1");
 				(void)system("shutdown -h now");
 				running = 0;
